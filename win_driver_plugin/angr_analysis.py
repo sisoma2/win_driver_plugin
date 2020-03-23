@@ -7,7 +7,7 @@ def angr_find_ioctls(bin, dispatch_addr):
 	try:
 		import angr
 	except ImportError:
-		print "Please install angr to continue, see: https://github.com/andreafioraldi/angr-win64-wheels"
+		print("Please install angr to continue, see: https://github.com/andreafioraldi/angr-win64-wheels")
 		return
 	
 	p = angr.Project(bin, auto_load_libs=False)
@@ -39,9 +39,9 @@ def find_dispatch(p):
 					dispatch_addr = store_consts[0].value
 					break
 	if not dispatch_addr:
-		print "Could not find IOCTL dispatch function :("    
+		print("Could not find IOCTL dispatch function :(")
 	else:
-		print "Dispatch function found: " + hex(dispatch_addr)
+		print("Dispatch function found: " + hex(dispatch_addr))
 	return dispatch_addr
 	
 def find_ioctls(p, dispatch_addr):
@@ -89,7 +89,7 @@ def find_ioctls(p, dispatch_addr):
 		return []
 	print('potential device codes: {}'.format(device_codes))
 	likely_device_code = max(device_codes, key=device_codes.get)
-	print "Likely device code: 0x%X" % (likely_device_code,)
+	print("Likely device code: 0x%X" % (likely_device_code,))
 	
 	out = []
 	for i in generic_reg_vals:
