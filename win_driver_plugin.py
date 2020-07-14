@@ -124,8 +124,8 @@ def find_all_ioctls():
     fc = idaapi.FlowChart(f, flags=idaapi.FC_PREDS)
     for block in fc:
         # grab the last two instructions in the block 
-        last_inst = idc.PrevHead(block.end_ea)
-        penultimate_inst = idc.PrevHead(last_inst)
+        last_inst = idc.prev_head(block.end_ea)
+        penultimate_inst = idc.prev_head(last_inst)
         # If the penultimate instruction is cmp or sub against an immediate value immediately preceding a 'jz' 
         # then it's a decent guess that it's an IOCTL code (if this is a dispatch function)
         if idc.print_insn_mnem(penultimate_inst) in ['cmp', 'sub'] and idc.get_operand_type(penultimate_inst, 1) == 5:
