@@ -124,8 +124,8 @@ def find_all_ioctls():
     fc = idaapi.FlowChart(f, flags=idaapi.FC_PREDS)
     for block in fc:
         # grab the last two instructions in the block 
-        last_inst = idc.PrevHead(block.end_ea)
-        penultimate_inst = idc.PrevHead(last_inst)
+        last_inst = idc.prev_head(block.end_ea)
+        penultimate_inst = idc.prev_head(last_inst)
         # If the penultimate instruction is cmp or sub against an immediate value immediately preceding a 'jz' 
         # then it's a decent guess that it's an IOCTL code (if this is a dispatch function)
         if idc.print_insn_mnem(penultimate_inst) in ['cmp', 'sub'] and idc.get_operand_type(penultimate_inst, 1) == 5:
@@ -335,9 +335,8 @@ def register_dynamic_action(form, popup, description, handler):
 class WinDriverHooks(idaapi.UI_Hooks):
     """Installs hook function which is triggered when popup forms are created and adds extra menu options if it is the right-click disasm view menu"""
 
-    def finish_populating_tform_popup(self, form, popup):
-        tft = idaapi.get_tform_type(form)
-        if tft != idaapi.BWN_DISASM:
+    def finish_populating_widget_popup(self, form, popup):
+        if idaapi.get_widget_type(form) != idaapi.BWN_DISASM:
             return
 
         pos = idc.get_screen_ea()
